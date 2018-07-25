@@ -8,6 +8,18 @@ pipeline {
       CHARTMUSEUM_CREDS = credentials('jenkins-x-chartmuseum')
     }
     stages {
+     stage('Test') {
+            steps {
+                sh './gradlew check'
+            }
+        }
+     }
+	    post {
+	        always {
+	            junit 'build/reports/**/*.xml'
+	        }
+	    }
+	  }
       stage('CI Build and push snapshot') {
         when {
           branch 'PR-*'
